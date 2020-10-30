@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Particular\\source\\repos\\AeroportoAPI\\AeroportoAPI.csproj": {}
+    "C:\\Users\\Particular\\Source\\Repos\\C-Danilo\\AeroAPI\\AeroportoAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Particular\\source\\repos\\AeroportoAPI\\AeroportoAPI.csproj": {
+    "C:\\Users\\Particular\\Source\\Repos\\C-Danilo\\AeroAPI\\AeroportoAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Particular\\source\\repos\\AeroportoAPI\\AeroportoAPI.csproj",
+        "projectUniqueName": "C:\\Users\\Particular\\Source\\Repos\\C-Danilo\\AeroAPI\\AeroportoAPI.csproj",
         "projectName": "AeroportoAPI",
-        "projectPath": "C:\\Users\\Particular\\source\\repos\\AeroportoAPI\\AeroportoAPI.csproj",
+        "projectPath": "C:\\Users\\Particular\\Source\\Repos\\C-Danilo\\AeroAPI\\AeroportoAPI.csproj",
         "packagesPath": "C:\\Users\\Particular\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Particular\\source\\repos\\AeroportoAPI\\obj\\",
+        "outputPath": "C:\\Users\\Particular\\Source\\Repos\\C-Danilo\\AeroAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"
@@ -42,9 +42,31 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[3.1.9, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[3.1.9, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.1.9, )"
+            },
             "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
               "target": "Package",
               "version": "[1.10.9, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[3.1.4, )"
+            },
+            "Pomelo.EntityFrameworkCore.MySql": {
+              "target": "Package",
+              "version": "[3.2.3, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

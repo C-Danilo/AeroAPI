@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AeroportoAPI.Model;
-using AeroportoAPI.Request;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using AeroportoAPI.Model;
 
 namespace AeroportoAPI.Controllers
 {
@@ -13,53 +13,97 @@ namespace AeroportoAPI.Controllers
     [ApiController]
     public class ReservaController : ControllerBase
     {
-        private List<Reserva> Reservas = new List<Reserva>();
-        private int Id = 1;
+        private readonly ReservaContext _context;
 
-        [HttpPost]
-        public IActionResult EfetuarReserva(EfetuarReservaRequest request)
+        public ReservaController(ReservaContext context)
         {
-            var reserva = new Reserva();
-            reserva.Id = Id;
-            Id = Id++;
-            reserva.Documento = request.Documento;
-            reserva.Id = request.VooId;
-            reserva.Poltrona = request.Poltrona;
-
-            Reservas.Add(reserva);
-
-            return Ok(reserva.Id);
+            _context = context;
         }
 
+        // GET: api/Reserva
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Reserva>>> GetReservas()
+        {
+            return await _context.Reservas.ToListAsync();
+        }
+
+        // GET: api/Reserva/5
         [HttpGet("{id}")]
-        public IActionResult BuscaPorId(int id)
+        public async Task<ActionResult<Reserva>> GetReserva(int id)
         {
-            return null;
+            var reserva = await _context.Reservas.FindAsync(id);
+
+            if (reserva == null)
+            {
+                return NotFound();
+            }
+
+            return reserva;
         }
 
-        [HttpGet("BuscaPorVoo/{VooId}")]
-        public IActionResult BuscaPorVoo(int vooid)
+        // PUT: api/Reserva/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutReserva(int id, Reserva reserva)
         {
-            return null;
+            if (id != reserva.Id)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(reserva).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ReservaExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
+        // POST: api/Reserva
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPost]
+        public async Task<ActionResult<Reserva>> PostReserva(Reserva reserva)
+        {
+            _context.Reservas.Add(reserva);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetReserva", new { id = reserva.Id }, reserva);
+        }
+
+        // DELETE: api/Reserva/5
         [HttpDelete("{id}")]
-        public IActionResult ExcluirId(int id)
+        public async Task<ActionResult<Reserva>> DeleteReserva(int id)
         {
-            return null;
+            var reserva = await _context.Reservas.FindAsync(id);
+            if (reserva == null)
+            {
+                return NotFound();
+            }
+
+            _context.Reservas.Remove(reserva);
+            await _context.SaveChangesAsync();
+
+            return reserva;
         }
 
-        [HttpPut]
-        public IActionResult Editar(EditarReservaRequest request)
+        private bool ReservaExists(int id)
         {
-            return null;
+            return _context.Reservas.Any(e => e.Id == id);
         }
-
-        [HttpGet("BuscarPoltronaVazia/{idPoltrona}")]
-        public IActionResult BuscarPoltronaVazia(int idPoltrona)
-        {
-            return null;
-        }
-
     }
 }
