@@ -6,54 +6,54 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AeroportoAPI.Model;
+using AeroportoAPI.DTO;
 
 namespace AeroportoAPI.Controllers
 {
-    //Classe de crud do local da viagem
     [Route("api/[controller]")]
     [ApiController]
-    public class LocalController : ControllerBase
+    public class VooController : ControllerBase
     {
         private readonly ReservaContext _context;
 
-        public LocalController(ReservaContext context)
+        public VooController(ReservaContext context)
         {
             _context = context;
         }
 
-        // GET: api/Local
+        // GET: api/Voo
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Local>>> GetLocais()
+        public async Task<ActionResult<IEnumerable<Voo>>> GetVoos()
         {
-            return await _context.Locais.ToListAsync();
+            return await _context.Voos.ToListAsync();
         }
 
-        // GET: api/Local/5
+        // GET: api/Voo/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Local>> GetLocal(int id)
+        public async Task<ActionResult<Voo>> GetVoo(int id)
         {
-            var local = await _context.Locais.FindAsync(id);
+            var voo = await _context.Voos.FindAsync(id);
 
-            if (local == null)
+            if (voo == null)
             {
                 return NotFound();
             }
 
-            return local;
+            return voo;
         }
 
-        // PUT: api/Local/5
+        // PUT: api/Voo/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLocal(int id, Local local)
+        public async Task<IActionResult> PutVoo(int id, Voo voo)
         {
-            if (id != local.ID)
+            if (id != voo.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(local).State = EntityState.Modified;
+            _context.Entry(voo).State = EntityState.Modified;
 
             try
             {
@@ -61,7 +61,7 @@ namespace AeroportoAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!LocalExists(id))
+                if (!VooExists(id))
                 {
                     return NotFound();
                 }
@@ -74,37 +74,38 @@ namespace AeroportoAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Local
+        // POST: api/Voo
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Local>> PostLocal(Local local)
+        public async Task<ActionResult<Voo>> PostVoo(Voo voo)
         {
-            _context.Locais.Add(local);
+            _context.Voos.Add(voo);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetLocal", new { id = local.ID }, local);
+            return CreatedAtAction("GetVoo", new { id = voo.Id }, voo);
         }
 
-        // DELETE: api/Local/5
+        // DELETE: api/Voo/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Local>> DeleteLocal(int id)
+        public async Task<ActionResult<Voo>> DeleteVoo(int id)
         {
-            var local = await _context.Locais.FindAsync(id);
-            if (local == null)
+            var voo = await _context.Voos.FindAsync(id);
+            if (voo == null)
             {
                 return NotFound();
             }
 
-            _context.Locais.Remove(local);
+            _context.Voos.Remove(voo);
             await _context.SaveChangesAsync();
 
-            return local;
+            return voo;
         }
 
-        private bool LocalExists(int id)
+        private bool VooExists(int id)
         {
-            return _context.Locais.Any(e => e.ID == id);
+            return _context.Voos.Any(e => e.Id == id);
         }
+      
     }
 }

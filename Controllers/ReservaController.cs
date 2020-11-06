@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AeroportoAPI.Model;
+using AeroportoAPI.DTO;
 
 namespace AeroportoAPI.Controllers
 {
+    //classe de crud da reserva
     [Route("api/[controller]")]
     [ApiController]
     public class ReservaController : ControllerBase
@@ -77,12 +79,17 @@ namespace AeroportoAPI.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Reserva>> PostReserva(Reserva reserva)
+        public async Task<ActionResult<Reserva>> PostReserva(ReservaDTO reserva)
         {
-            _context.Reservas.Add(reserva);
+            var reservaModel = new Reserva();
+            reservaModel.Documento = reserva.Documento;
+            reservaModel.VooId = reserva.VooId;
+            reservaModel.Poltrona = reserva.Poltrona;
+
+            _context.Reservas.Add(reservaModel);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetReserva", new { id = reserva.Id }, reserva);
+            return CreatedAtAction("GetReserva", new { id = reservaModel.Id }, reservaModel);
         }
 
         // DELETE: api/Reserva/5
@@ -105,5 +112,7 @@ namespace AeroportoAPI.Controllers
         {
             return _context.Reservas.Any(e => e.Id == id);
         }
+
+
     }
 }

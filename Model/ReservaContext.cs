@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 namespace AeroportoAPI.Model
 {
+       //classe principai do Entity Framework
     public class ReservaContext : DbContext
     {
         public DbSet<Local> Locais { get; set; }
