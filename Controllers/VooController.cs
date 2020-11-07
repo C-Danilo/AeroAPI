@@ -106,6 +106,13 @@ namespace AeroportoAPI.Controllers
         {
             return _context.Voos.Any(e => e.Id == id);
         }
-      
+
+        [HttpGet("FiltroVoos")]
+        public async Task<ActionResult<IEnumerable<Voo>>> GetVoosByFilter(int idLocalOrigem, int idLocalDestino, DateTime dataIda, DateTime dataVolta )
+        {
+            return await _context.Voos.Where(Voo => Voo.LocalOrigem.ID == idLocalOrigem || Voo.LocalDestino.ID == idLocalDestino || Voo.dataIda == dataVolta || Voo.dataIda == dataIda).ToListAsync();
+        }
+
+
     }
 }
