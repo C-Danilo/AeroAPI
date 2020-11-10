@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AeroportoAPI.Model;
 using AeroportoAPI.DTO;
+using Microsoft.AspNetCore.Razor.Language;
 
 namespace AeroportoAPI.Controllers
 {
@@ -23,9 +24,19 @@ namespace AeroportoAPI.Controllers
 
         // GET: api/Voo
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Voo>>> GetVoos()
+        public async Task<ActionResult<IEnumerable<dynamic>>> GetVoos()
         {
-            return await _context.Voos.ToListAsync();
+            //return Ok(Convert(_context.Voos.ToList()));
+            return _context.Voos.Select(item => new
+            {
+                item.Id,
+                item.dataIda,
+                item.dataVolta,
+                item.LocalOrigemID,
+                item.LocalDestinoID,
+                item.NumeroParadas,
+                item.Preco
+            }).ToList();
         }
 
         // GET: api/Voo/5
@@ -46,8 +57,18 @@ namespace AeroportoAPI.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutVoo(int id, Voo voo)
+        public async Task<IActionResult> PutVoo(int id, VooDTO vooDto)
         {
+            var voo = await _context.Voos.FindAsync(id);            
+            voo.LocalOrigemID = vooDto.LocalOrigemID;
+            voo.LocalDestinoID = vooDto.LocalDestinoID;
+            voo.NumeroParadas = vooDto.NumeroParadas;
+            //voo.TempoIda = vooDto.TempoIda;
+           // voo.TempoVolta = vooDto.TempoVolta;
+            voo.Preco = vooDto.Preco;
+            voo.dataIda = vooDto.dataIda;
+            voo.dataVolta = vooDto.dataVolta;
+
             if (id != voo.Id)
             {
                 return BadRequest();
@@ -108,11 +129,28 @@ namespace AeroportoAPI.Controllers
         }
 
         [HttpGet("FiltroVoos")]
-        public async Task<ActionResult<IEnumerable<Voo>>> GetVoosByFilter(int idLocalOrigem, int idLocalDestino, DateTime dataIda, DateTime dataVolta )
+        public ActionResult GetByFilter( [FromQuery]FiltroVooDTO filtro )
         {
-            return await _context.Voos.Where(Voo => Voo.LocalOrigem.ID == idLocalOrigem || Voo.LocalDestino.ID == idLocalDestino || Voo.dataIda == dataVolta || Voo.dataIda == dataIda).ToListAsync();
+            var listaDeRetorno = _context.Voos.Where(item => item.LocalDestinoID.Id == filtro.DestinoId && item.LocalOrigemID.Id == filtro.OrigemId && item.dataIda == filtro.dataInicial && item.dataVolta == filtro.dataFinal).ToList();
+            //return Ok(Convert(listaDeRetorno.ToList()));
+            return Ok(listaDeRetorno);
         }
 
+        /* public IEnumerable<dynamic> Convert(List<Voo> listaVoos) 
+         {
+
+
+             return listaVoos.Select(item => new
+             {
+                 item.Id,
+                 item.dataIda,
+                 item.dataVolta,
+                 item.LocalOrigemID,
+                 item.LocalDestinoID,
+                 item.NumeroParadas,
+                 item.Preco
+             });
+         }*/
 
     }
 }

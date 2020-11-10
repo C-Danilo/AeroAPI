@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AeroportoAPI.Model;
+using AeroportoAPI.DTO;
 
 namespace AeroportoAPI.Controllers
 {
@@ -23,9 +24,12 @@ namespace AeroportoAPI.Controllers
 
         // GET: api/Local
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Local>>> GetLocais()
+        public async Task<ActionResult<IEnumerable<dynamic>>> GetLocais()
         {
-            return await _context.Locais.ToListAsync();
+            return  _context.Locais.Select(item => new
+            {
+                item.nome                
+            }).ToList();
         }
 
         // GET: api/Local/5
@@ -46,9 +50,13 @@ namespace AeroportoAPI.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLocal(int id, Local local)
+        public async Task<IActionResult> PutLocal(int id, LocalDTO localDto)
         {
-            if (id != local.ID)
+
+            var local = await _context.Locais.FindAsync(id);
+            local.nome = localDto.nome;
+
+            if (id != local.Id)
             {
                 return BadRequest();
             }
@@ -78,12 +86,16 @@ namespace AeroportoAPI.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Local>> PostLocal(Local local)
+        public async Task<ActionResult<Local>> PostLocal(LocalDTO localDto)
         {
-            _context.Locais.Add(local);
+            var localModel = new Local();
+           
+            localModel.nome = localDto.nome;
+
+            _context.Locais.Add(localModel);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetLocal", new { id = local.ID }, local);
+            return CreatedAtAction("GetLocal", new { id = localModel.Id }, localModel);
         }
 
         // DELETE: api/Local/5
@@ -104,7 +116,7 @@ namespace AeroportoAPI.Controllers
 
         private bool LocalExists(int id)
         {
-            return _context.Locais.Any(e => e.ID == id);
+            return _context.Locais.Any(e => e.Id == id);
         }
     }
 }

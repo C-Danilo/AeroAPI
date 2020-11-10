@@ -13,9 +13,9 @@ namespace AeroportoAPI.Model
 
         public DateTime dataVolta { get; set; }
 
-        public Local LocalOrigem { get; set; }
+        public Local LocalOrigemID { get; set; }
 
-        public Local LocalDestino { get; set; }
+        public Local LocalDestinoID { get; set; }
 
         public int NumeroParadas { get; set; }
 

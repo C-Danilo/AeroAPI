@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AeroportoAPI.Model
+namespace AeroportoAPI.DTO
 {
-    public class Local
+    public class LocalDTO
     {
-        public int Id { get; set; }
-
         public string nome { get; set; }
     }
 }
