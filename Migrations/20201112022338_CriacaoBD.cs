@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AeroportoAPI.Migrations
 {
-    public partial class CriacaoInicialDoBD : Migration
+    public partial class CriacaoBD : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,13 +12,13 @@ namespace AeroportoAPI.Migrations
                 name: "Locais",
                 columns: table => new
                 {
-                    ID = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     nome = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Locais", x => x.ID);
+                    table.PrimaryKey("PK_Locais", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -29,8 +29,8 @@ namespace AeroportoAPI.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     dataIda = table.Column<DateTime>(nullable: false),
                     dataVolta = table.Column<DateTime>(nullable: false),
-                    LocalOrigemID = table.Column<int>(nullable: true),
-                    LocalDestinoID = table.Column<int>(nullable: true),
+                    LocalOrigemId = table.Column<int>(nullable: false),
+                    LocalDestinoId = table.Column<int>(nullable: false),
                     NumeroParadas = table.Column<int>(nullable: false),
                     TempoIda = table.Column<TimeSpan>(nullable: false),
                     TempoVolta = table.Column<TimeSpan>(nullable: false),
@@ -40,17 +40,17 @@ namespace AeroportoAPI.Migrations
                 {
                     table.PrimaryKey("PK_Voos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Voos_Locais_LocalDestinoID",
-                        column: x => x.LocalDestinoID,
+                        name: "FK_Voos_Locais_LocalDestinoId",
+                        column: x => x.LocalDestinoId,
                         principalTable: "Locais",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Voos_Locais_LocalOrigemID",
-                        column: x => x.LocalOrigemID,
+                        name: "FK_Voos_Locais_LocalOrigemId",
+                        column: x => x.LocalOrigemId,
                         principalTable: "Locais",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -80,14 +80,14 @@ namespace AeroportoAPI.Migrations
                 column: "VooId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Voos_LocalDestinoID",
+                name: "IX_Voos_LocalDestinoId",
                 table: "Voos",
-                column: "LocalDestinoID");
+                column: "LocalDestinoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Voos_LocalOrigemID",
+                name: "IX_Voos_LocalOrigemId",
                 table: "Voos",
-                column: "LocalOrigemID");
+                column: "LocalOrigemId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

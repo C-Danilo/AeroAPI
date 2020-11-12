@@ -19,14 +19,14 @@ namespace AeroportoAPI.Migrations
 
             modelBuilder.Entity("AeroportoAPI.Model.Local", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<string>("nome")
                         .HasColumnType("longtext");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("Locais");
                 });
@@ -59,10 +59,10 @@ namespace AeroportoAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("LocalDestinoID")
+                    b.Property<int>("LocalDestinoId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("LocalOrigemID")
+                    b.Property<int>("LocalOrigemId")
                         .HasColumnType("int");
 
                     b.Property<int>("NumeroParadas")
@@ -85,9 +85,9 @@ namespace AeroportoAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LocalDestinoID");
+                    b.HasIndex("LocalDestinoId");
 
-                    b.HasIndex("LocalOrigemID");
+                    b.HasIndex("LocalOrigemId");
 
                     b.ToTable("Voos");
                 });
@@ -105,11 +105,15 @@ namespace AeroportoAPI.Migrations
                 {
                     b.HasOne("AeroportoAPI.Model.Local", "LocalDestino")
                         .WithMany()
-                        .HasForeignKey("LocalDestinoID");
+                        .HasForeignKey("LocalDestinoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("AeroportoAPI.Model.Local", "LocalOrigem")
                         .WithMany()
-                        .HasForeignKey("LocalOrigemID");
+                        .HasForeignKey("LocalOrigemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

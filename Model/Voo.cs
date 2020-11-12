@@ -9,14 +9,16 @@ namespace AeroportoAPI.Model
     {
         public int Id { get; set; } // o Entity sabe que é primary key por ser Id
 
+        public int LocalOrigemId { get; set; }
+        public Local LocalOrigem { get; set; }
+
+        public int LocalDestinoId { get; set; }
+        public Local LocalDestino { get; set; }
+
         public DateTime dataIda { get; set; }
 
         public DateTime dataVolta { get; set; }
-
-        public Local LocalOrigemID { get; set; }
-
-        public Local LocalDestinoID { get; set; }
-
+       
         public int NumeroParadas { get; set; }
 
         public TimeSpan TempoIda { get; set; }

@@ -9170,11 +9170,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Particular\\Source\\Repos\\C-Danilo\\AeroAPI\\AeroportoAPI.csproj",
+      "projectUniqueName": "C:\\Users\\Particular\\Source\\Repos\\AeroAPI\\AeroportoAPI.csproj",
       "projectName": "AeroportoAPI",
-      "projectPath": "C:\\Users\\Particular\\Source\\Repos\\C-Danilo\\AeroAPI\\AeroportoAPI.csproj",
+      "projectPath": "C:\\Users\\Particular\\Source\\Repos\\AeroAPI\\AeroportoAPI.csproj",
       "packagesPath": "C:\\Users\\Particular\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Particular\\Source\\Repos\\C-Danilo\\AeroAPI\\obj\\",
+      "outputPath": "C:\\Users\\Particular\\Source\\Repos\\AeroAPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\"

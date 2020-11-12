@@ -24,9 +24,17 @@ namespace AeroportoAPI.Controllers
 
         // GET: api/Reserva
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Reserva>>> GetReservas()
+        public async Task<ActionResult<IEnumerable<dynamic>>> GetReservas()
         {
-            return await _context.Reservas.ToListAsync();
+            return _context.Reservas.Select(item => new
+            {
+                item.Id,
+                item.VooId,
+                //item.Voo,
+                item.Documento,
+                item.Poltrona
+               
+            }).ToList();
         }
 
         // GET: api/Reserva/5
@@ -47,14 +55,19 @@ namespace AeroportoAPI.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutReserva(int id, Reserva reserva)
+        public async Task<IActionResult> PutReserva(int id, ReservaDTO reservaDto)
         {
-            if (id != reserva.Id)
+            var reservaModel = await _context.Reservas.FindAsync(id);
+            reservaModel.Documento = reservaDto.Documento;
+            reservaModel.VooId = reservaDto.VooId;
+            reservaModel.Poltrona = reservaDto.Poltrona;
+
+            if (id != reservaModel.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(reserva).State = EntityState.Modified;
+            _context.Entry(reservaModel).State = EntityState.Modified;
 
             try
             {
@@ -79,17 +92,17 @@ namespace AeroportoAPI.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Reserva>> PostReserva(ReservaDTO reserva)
+        public async Task<ActionResult<Reserva>> PostReserva(ReservaDTO reservaDto)
         {
-            var reservaModel = new Reserva();
-            reservaModel.Documento = reserva.Documento;
-            reservaModel.VooId = reserva.VooId;
-            reservaModel.Poltrona = reserva.Poltrona;
+            var reserva = new Reserva();
+            reserva.Documento = reservaDto.Documento;
+            reserva.VooId = reservaDto.VooId;
+            reserva.Poltrona = reservaDto.Poltrona;
 
-            _context.Reservas.Add(reservaModel);
+            _context.Reservas.Add(reserva);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetReserva", new { id = reservaModel.Id }, reservaModel);
+            return CreatedAtAction("GetReserva", new { id = reserva.Id }, reserva);
         }
 
         // DELETE: api/Reserva/5
