@@ -24,17 +24,18 @@ namespace AeroportoAPI.Controllers
 
         // GET: api/Reserva
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<dynamic>>> GetReservas()
+        public ActionResult GetReservas()
         {
-            return _context.Reservas.Select(item => new
-            {
-                item.Id,
-                item.VooId,
-                //item.Voo,
-                item.Documento,
-                item.Poltrona
-               
-            }).ToList();
+            /* return _context.Reservas.Select(item => new
+             {
+                 item.Id,
+                 item.VooId,
+                 //item.Voo,
+                 item.Documento,
+                 item.Poltrona
+
+             }).ToList();*/
+            return Ok(Convert(_context.Reservas.ToList()));
         }
 
         // GET: api/Reserva/5
@@ -42,13 +43,14 @@ namespace AeroportoAPI.Controllers
         public async Task<ActionResult<Reserva>> GetReserva(int id)
         {
             var reserva = await _context.Reservas.FindAsync(id);
-
             if (reserva == null)
             {
                 return NotFound();
             }
+           
+            return Ok(Convert(_context.Reservas.Where(Reserva => Reserva.Id == id).ToList()));          
 
-            return reserva;
+            //return reserva;
         }
 
         // PUT: api/Reserva/5
@@ -124,6 +126,21 @@ namespace AeroportoAPI.Controllers
         private bool ReservaExists(int id)
         {
             return _context.Reservas.Any(e => e.Id == id);
+        }
+
+        private IEnumerable<dynamic> Convert(List<Reserva> lista)
+        {
+
+
+            return lista.Select(item => new
+            {
+                 
+                item.Id,
+                item.VooId,
+                item.Poltrona,
+                item.Documento        
+               
+            });
         }
 
 

@@ -45,14 +45,16 @@ namespace AeroportoAPI.Controllers
         {
 
             var voo = await _context.Voos.FindAsync(id);
-            
-
             if (voo == null)
             {
                 return NotFound();
             }
+            return Ok(Convert(_context.Voos.Where(Voo => Voo.Id == id).ToList()));
 
-            return voo;
+
+           
+
+            //return voo;
         }
 
         // PUT: api/Voo/5
@@ -62,11 +64,11 @@ namespace AeroportoAPI.Controllers
         public async Task<IActionResult> PutVoo(int id, VooDTO vooDto)
         {
             var vooModel = await _context.Voos.FindAsync(id);
-            vooModel.LocalOrigem = vooDto.LocalOrigem;
-            vooModel.LocalDestino = vooDto.LocalDestino;
+            vooModel.LocalOrigemId = vooDto.LocalOrigemId;
+            vooModel.LocalDestinoId = vooDto.LocalDestinoId;
             vooModel.NumeroParadas = vooDto.NumeroParadas;
-            vooModel.TempoIda = vooDto.TempoIda;
-            vooModel.TempoVolta = vooDto.TempoVolta;
+            //vooModel.TempoIda = vooDto.TempoIda;
+            //vooModel.TempoVolta = vooDto.TempoVolta;
             vooModel.Preco = vooDto.Preco;
             vooModel.dataIda = vooDto.dataIda;
             vooModel.dataVolta = vooDto.dataVolta;
@@ -104,11 +106,11 @@ namespace AeroportoAPI.Controllers
         public async Task<ActionResult<Voo>> PostVoo(VooDTO vooDto)
         {
             var vooModel = new Voo();
-            vooModel.LocalOrigem = vooDto.LocalOrigem;
-            vooModel.LocalDestino = vooDto.LocalDestino;
+            vooModel.LocalOrigemId = vooDto.LocalOrigemId;
+            vooModel.LocalDestinoId = vooDto.LocalDestinoId;
             vooModel.NumeroParadas = vooDto.NumeroParadas;
-            vooModel.TempoIda = vooDto.TempoIda;
-            vooModel.TempoVolta = vooDto.TempoVolta;
+            //vooModel.TempoIda = vooDto.TempoIda;
+            //vooModel.TempoVolta = vooDto.TempoVolta;
             vooModel.Preco = vooDto.Preco;
             vooModel.dataIda = vooDto.dataIda;
             vooModel.dataVolta = vooDto.dataVolta;
@@ -145,10 +147,10 @@ namespace AeroportoAPI.Controllers
             var listaDeRetorno = _context.Voos.Where(item => item.LocalDestinoId == filtro.DestinoId 
                                                           && item.LocalOrigemId == filtro.OrigemId 
                                                           && item.dataIda == filtro.dataInicial 
-                                                          && item.dataVolta == filtro.dataFinal).ToList();
+                                                          && item.dataVolta == filtro.dataFinal);
 
             return Ok(Convert(listaDeRetorno.ToList()));
-            //return Ok(listaDeRetorno);
+            //return Ok(_context.Voos.ToList());
         }
 
         private IEnumerable<dynamic> Convert(List<Voo> lista) 

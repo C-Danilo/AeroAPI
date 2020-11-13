@@ -24,11 +24,12 @@ namespace AeroportoAPI.Controllers
 
         // GET: api/Local
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<dynamic>>> GetLocais()
+        public ActionResult<IEnumerable<dynamic>> GetLocais()
         {
-            return  _context.Locais.Select(item => new
+            return _context.Locais.Select(item => new
             {
-                item.nome                
+                item.Id,
+                item.nome
             }).ToList();
         }
 
