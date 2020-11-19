@@ -26,5 +26,7 @@ namespace AeroportoAPI.Model
         public TimeSpan TempoVolta { get; set; }
 
         public double Preco { get; set; }
+
+        public int LimitePassageiros { get; set; }
     }
 }

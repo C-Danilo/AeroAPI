@@ -49,17 +49,41 @@ namespace AeroportoAPI.Controllers
             {
                 return NotFound();
             }
-            return Ok(Convert(_context.Voos.Where(Voo => Voo.Id == id).ToList()));
-
-
-           
+            return Ok(Convert(_context.Voos.Where(Voo => Voo.Id == id).ToList()));           
 
             //return voo;
         }
 
-        // PUT: api/Voo/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpGet("FiltroVoos")]
+        public ActionResult<IEnumerable<dynamic>> GetByFilter([FromQuery] FiltroVoosDTO filtro)
+        {
+            var listaDeRetorno = _context.Voos.Where(item => (item.LocalOrigemId == filtro.OrigemId && item.LocalDestinoId == filtro.DestinoId) ||
+                                                             (item.dataIda >= filtro.DataInicial && item.dataIda <= filtro.DataFinal) ||
+                                                             (item.LimitePassageiros > filtro.NumeroPasssagerios)
+                                                      );
+
+            return Ok(Convert(listaDeRetorno.ToList()));
+            //return Ok(_context.Voos.ToList());
+        }
+
+        private IEnumerable<dynamic> Convert(List<Voo> lista)
+        {
+
+
+            return lista.Select(item => new
+            {
+                item.Id,
+                item.dataIda,
+                item.dataVolta,
+                item.LocalOrigemId,
+                item.LocalDestinoId,
+                item.NumeroParadas,
+                item.LimitePassageiros,
+                item.Preco
+            });
+        }
+
+        // Removido o tempo de ida e volta apenas para agilizar os teste
         [HttpPut("{id}")]
         public async Task<IActionResult> PutVoo(int id, VooDTO vooDto)
         {
@@ -72,6 +96,7 @@ namespace AeroportoAPI.Controllers
             vooModel.Preco = vooDto.Preco;
             vooModel.dataIda = vooDto.dataIda;
             vooModel.dataVolta = vooDto.dataVolta;
+            vooModel.LimitePassageiros = vooDto.LimitePassageiros;
 
             if (id != vooModel.Id)
             {
@@ -100,8 +125,6 @@ namespace AeroportoAPI.Controllers
         }
 
         // POST: api/Voo
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
         public async Task<ActionResult<Voo>> PostVoo(VooDTO vooDto)
         {
@@ -114,6 +137,7 @@ namespace AeroportoAPI.Controllers
             vooModel.Preco = vooDto.Preco;
             vooModel.dataIda = vooDto.dataIda;
             vooModel.dataVolta = vooDto.dataVolta;
+            vooModel.LimitePassageiros = vooDto.LimitePassageiros;
             _context.Voos.Add(vooModel);
             await _context.SaveChangesAsync();
 
@@ -141,33 +165,7 @@ namespace AeroportoAPI.Controllers
             return _context.Voos.Any(e => e.Id == id);
         }
 
-        [HttpGet("FiltroVoos")]
-        public ActionResult GetByFilter( [FromQuery]FiltroVooDTO filtro )
-        {
-            var listaDeRetorno = _context.Voos.Where(item => item.LocalDestinoId == filtro.DestinoId 
-                                                          && item.LocalOrigemId == filtro.OrigemId 
-                                                          && item.dataIda == filtro.dataInicial 
-                                                          && item.dataVolta == filtro.dataFinal);
-
-            return Ok(Convert(listaDeRetorno.ToList()));
-            //return Ok(_context.Voos.ToList());
-        }
-
-        private IEnumerable<dynamic> Convert(List<Voo> lista) 
-         {
-
-
-             return lista.Select(item => new
-             {
-                 item.Id,
-                 item.dataIda,
-                 item.dataVolta,
-                 item.LocalOrigemId,
-                 item.LocalDestinoId,
-                 item.NumeroParadas,
-                 item.Preco
-             });
-         }
+        
 
     }
 }

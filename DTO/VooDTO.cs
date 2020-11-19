@@ -18,10 +18,11 @@ namespace AeroportoAPI.DTO
 
         public int NumeroParadas { get; set; }
 
-       // public TimeSpan TempoIda { get; set; }
+        //public TimeSpan TempoIda { get; set; }
 
-      //  public TimeSpan TempoVolta { get; set; }
+       // public TimeSpan TempoVolta { get; set; }
 
         public double Preco { get; set; }
+        public int LimitePassageiros { get; set; }
     }
 }

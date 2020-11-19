@@ -3,14 +3,16 @@ using System;
 using AeroportoAPI.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AeroportoAPI.Migrations
 {
     [DbContext(typeof(ReservaContext))]
-    partial class ReservaContextModelSnapshot : ModelSnapshot
+    [Migration("20201119013732_CriacaoColunaLimitePassageiro")]
+    partial class CriacaoColunaLimitePassageiro
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
