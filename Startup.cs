@@ -24,7 +24,8 @@ namespace AeroportoAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSwaggerGen();
+
+            services.AddSwaggerGen();           
 
             // Replace "YourDbContext" with the name of your own DbContext derived class.
             services.AddDbContextPool<ReservaContext>(dbContextOptions => dbContextOptions
@@ -35,11 +36,22 @@ namespace AeroportoAPI
             mySqlOptions => mySqlOptions
             .ServerVersion(new Version(8, 0, 21), ServerType.MySql)
              .CharSetBehavior(CharSetBehavior.NeverAppend)));
+
+            services.AddCors(Options =>
+            {
+                Options.AddPolicy("CorsPolicy",
+                    builder => builder.SetIsOriginAllowed(_ => true)
+                                                    .AllowAnyMethod()
+                                                    .AllowAnyHeader()
+                                                    .AllowCredentials().Build());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors("CorsPolicy");
+
             app.UseSwagger();
 
             app.UseSwaggerUI(c =>
